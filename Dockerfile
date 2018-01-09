@@ -1,5 +1,5 @@
 # Dockerfile
-FROM debian:jessie-slim
+FROM debian:stretch-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         autoconf \
@@ -24,8 +24,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 
 RUN mkdir -p /usr/src/extrae && \
-    curl -SL https://github.com/bsc-performance-tools/extrae/archive/2.5.tar.gz \
-    | tar -xzC /usr/src/extrae --strip-components=2 extrae-2.5/2.5.2 && \
+    curl -SL https://github.com/bsc-performance-tools/extrae/archive/3.3.tar.gz \
+    | tar -xzC /usr/src/extrae --strip-components=2 extrae-3.3/3.3.0 && \
     cd /usr/src/extrae && \
     ./bootstrap && \
     ./configure \
@@ -42,10 +42,8 @@ RUN mkdir -p /usr/src/extrae && \
 
 COPY nanox /usr/src/nanox
 RUN cd /usr/src/nanox && \
-    autoreconf -fiv && \
+    ./bootstrap && \
     ./configure \
-        --disable-allocator \
-        --disable-memtracker \
         --with-extrae=/usr/local && \
     make && \
     make install && \
