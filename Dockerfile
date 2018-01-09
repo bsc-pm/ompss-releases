@@ -24,8 +24,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 
 RUN mkdir -p /usr/src/extrae && \
-    curl -SL https://github.com/bsc-performance-tools/extrae/archive/3.3.tar.gz \
-    | tar -xzC /usr/src/extrae --strip-components=2 extrae-3.3/3.3.0 && \
+    curl -SL https://github.com/bsc-performance-tools/extrae/archive/3.5.2.tar.gz \
+    | tar -xzC /usr/src/extrae --strip-components=1 && \
     cd /usr/src/extrae && \
     ./bootstrap && \
     ./configure \
