@@ -1,6 +1,8 @@
 # Dockerfile
 FROM debian:stretch-slim
 
+ARG MAKEFLAGS
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
         autoconf \
         automake \
@@ -23,10 +25,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 
-RUN mkdir -p /usr/src/extrae && \
-    curl -SL https://github.com/bsc-performance-tools/extrae/archive/3.5.2.tar.gz \
-    | tar -xzC /usr/src/extrae --strip-components=1 && \
-    cd /usr/src/extrae && \
+RUN mkdir -p /usr/local/src/extrae && \
+    curl -SL https://github.com/bsc-performance-tools/extrae/archive/3.7.0.tar.gz \
+    | tar -xzC /usr/local/src/extrae --strip-components=1 && \
+    cd /usr/local/src/extrae && \
     ./bootstrap && \
     ./configure \
         --without-mpi \
@@ -40,8 +42,8 @@ RUN mkdir -p /usr/src/extrae && \
     make install && \
     make distclean
 
-COPY nanox /usr/src/nanox
-RUN cd /usr/src/nanox && \
+COPY nanox /usr/local/src/nanox
+RUN cd /usr/local/src/nanox && \
     ./bootstrap && \
     ./configure \
         --with-extrae=/usr/local && \
@@ -49,8 +51,8 @@ RUN cd /usr/src/nanox && \
     make install && \
     make distclean
 
-COPY mcxx /usr/src/mcxx
-RUN cd /usr/src/mcxx && \
+COPY mcxx /usr/local/src/mcxx
+RUN cd /usr/local/src/mcxx && \
     autoreconf -fiv && \
     ./configure \
         --enable-ompss \
